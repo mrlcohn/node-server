@@ -1,32 +1,35 @@
-import { S3 } from '@aws-sdk/client-s3';
-
-const express = require('express');
+import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
+import { S3Client, GetObjectCommand } from '@aws-sdk/client-s3';
+import express from 'express';
 
 const app = express();
 app.use(express.json());
 
-const PORT = 3001;
+const PORT = 80;
 app.listen(PORT, () => {
   console.log("Server listening on port " + PORT);
 });
 
-app.get("/photos/*", (req, res) => {
-  const path = req.originalUrl;
+app.get("/photos/\*", (req, res) => {
+  const path = req.originalUrl.slice(7);
 
-  var s3 = new S3();
-  s3.getObject(
-    { Bucket: "picture-site-photos", Key: path },
-    function (error, data) {
-      if (error != null) {
-        res.status(404);
-      } else {
-        res.writeHead(200, { "Content-Type": "image/jpeg" });
-        res.send(data.Body);
-      }
-    }
-);
+  const client = new S3Client();
+  const command = new GetObjectCommand({ Bucket: "picture-site-photos", Key: path });
+  try {
+    const url = getSignedUrl(client, command, { expiresIn: 30 });
+    res.writeHead(200, { "Content-Type": "application/json" });
+    res.send({ "src": url });
+  } catch {
+    console.log('Error occurred, investigate');
+    res.status(404).send({ "Message": "Error" });
+  }
 
-  res.status(200).send(photo);
+  if (error != null) {
+    res.status(404);
+  } else {
+    res.writeHead(200, { "Content-Type": "application/json" });
+    res.send(url);
+  }
 });
 
 /*
