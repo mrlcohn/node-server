@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "A server for family photo sharing",
   "main": "index.js",
-  "type": "commonjs",
+  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -11,7 +11,6 @@
   "license": "ISC",
   "dependencies": {
     "@aws-sdk/client-s3": "^3.405.0",
-    "@aws-sdk/s3-request-presigner": "^3.405.0",
     "aws-sdk": "^2.1450.0",
     "express": "^4.18.2"
   }
