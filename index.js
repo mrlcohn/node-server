@@ -26,32 +26,35 @@ httpsServer.listen(PORT, () => {
   console.log("Server listening on port " + PORT);
 });
 
-const client = new MongoClient('', {
-  serverApi: {
-    version: ServerApiVersion.v1,
-    strict: true,
-    deprecationErrors: true
-  }
-});
-
-async function run() {
-  try {
-    await client.connect();
-
-    await client.db('admin').commang({ ping: 1 });
-    console.log('Pinged your deployment. You successfully connected to MongoDB!');
-  } finally {
-    await client.close();
-  }
-}
-run().catch(console.dir);
-
 app.get("/photos/\*", (req, res) => {
   const path = req.originalUrl.slice(8);
-  const client = new S3Client({ region: 'us-east-2' });
+
+  const mongoClient = new MongoClient('', {
+    serverApi: {
+      version: ServerApiVersion.v1,
+      strict: true,
+      deprecationErrors: true
+    }
+  });
+  
+  let data;
+  async function run() {
+    try {
+      await mongoClient.connect();
+      const db = await mongoClient.db('picture-site');
+      const collection = db.collection('examples');
+      data = await collection.findOne({ path: path });
+      console.log(data);
+    } finally {
+      await mongoClient.close();
+    }
+  }
+  run().catch(console.dir);
+
+  const s3Client = new S3Client({ region: 'us-east-2' });
   const command = new GetObjectCommand({ Bucket: "picture-site-photos", Key: path });
 
-  getSignedUrl(client, command, { expiresIn: 30 })
+  getSignedUrl(s3Client, command, { expiresIn: 30 })
     .then(response => res.send({ 'url': response }));
 });
 
