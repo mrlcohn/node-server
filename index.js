@@ -43,6 +43,7 @@ app.get("/photos/\*", (req, res) => {
       await mongoClient.connect();
       const db = await mongoClient.db('picture-site');
       const collection = db.collection('examples');
+      console.log(path);
       data = await collection.findOne({ path: path });
       console.log(data);
     } finally {
