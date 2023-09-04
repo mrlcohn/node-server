@@ -5,6 +5,7 @@ import cors from 'cors';
 import express from 'express';
 import https from 'https';
 import fs from 'fs';
+import { MongoClient, ServerApiVersion } from 'mongodb';
 
 const app = express();
 app.use(express.json());
@@ -24,6 +25,26 @@ const PORT = 443;
 httpsServer.listen(PORT, () => {
   console.log("Server listening on port " + PORT);
 });
+
+const client = new MongoClient('', {
+  serverApi: {
+    version: ServerApiVersion.v1,
+    strict: true,
+    deprecationErrors: true
+  }
+});
+
+async function run() {
+  try {
+    await client.connect();
+
+    await client.db('admin').commang({ ping: 1 });
+    console.log('Pinged your deployment. You successfully connected to MongoDB!');
+  } finally {
+    await client.close();
+  }
+}
+run().catch(console.dir);
 
 app.get("/photos/\*", (req, res) => {
   const path = req.originalUrl.slice(8);
