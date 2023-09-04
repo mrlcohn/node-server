@@ -41,9 +41,10 @@ app.get("/photos/\*", (req, res) => {
   async function run() {
     try {
       await mongoClient.connect();
-      const db = await mongoClient.db('picture-site');
-      data = db.collection('examples').findOne({ path: path });
-      console.log(data);
+      data = await mongoClient
+                    .db('photos')
+                    .collection('examples')
+                    .findOne({ path: path });
     } finally {
       await mongoClient.close();
     }
@@ -51,7 +52,7 @@ app.get("/photos/\*", (req, res) => {
   run().catch(console.dir);
 
   const s3Client = new S3Client({ region: 'us-east-2' });
-  const command = new GetObjectCommand({ Bucket: "picture-site-photos", Key: path });
+  const command = new GetObjectCommand({ Bucket: "picture-site-photos", Key: data.path });
 
   getSignedUrl(s3Client, command, { expiresIn: 30 })
     .then(response => res.send({ 'url': response }));
