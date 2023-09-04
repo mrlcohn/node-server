@@ -16,12 +16,12 @@ app.use(cors({
 AWS.config.update({ "region": "us-east-2" });
 
 const httpsServer = https.createServer({
-  key: fs.readFileSync('/etc/letsencrypt/server.cohn-family.photos/privkey.pem'),
-  cert: fs.readFileSync('/etc/letsencrypt/server.cohn-family.photos/fullchain.pem')
+  key: fs.readFileSync('/etc/letsencrypt/live/server.cohn-family.photos/privkey.pem'),
+  cert: fs.readFileSync('/etc/letsencrypt/live/server.cohn-family.photos/fullchain.pem')
 }, app);
 
 const PORT = 443;
-app.listen(PORT, () => {
+httpsServer.listen(PORT, () => {
   console.log("Server listening on port " + PORT);
 });
 
