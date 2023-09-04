@@ -26,7 +26,34 @@ httpsServer.listen(PORT, () => {
   console.log("Server listening on port " + PORT);
 });
 
-app.get("/photos/\*", (req, res) => {
+app.get("/photos/"), async (req, res) => {
+  const mongoClient = new MongoClient('', {
+    serverApi: {
+      version: ServerApiVersion.v1,
+      strict: true,
+      deprecationErrors: true
+    }
+  });
+
+  let data;
+  async function run() {
+    try {
+      await mongoClient.connect();
+      data = await mongoClient
+                    .db('photos')
+                    .collection('examples')
+                    .find({})
+                    .map((photo) => photo);
+    } finally {
+      await mongoClient.close();
+    }
+  }
+  await run().catch(console.dir);
+
+  res.send({ data });
+}
+
+app.get("/photos/\*", async (req, res) => {
   const path = req.originalUrl.slice(8);
 
   const mongoClient = new MongoClient('', {
@@ -49,7 +76,7 @@ app.get("/photos/\*", (req, res) => {
       await mongoClient.close();
     }
   }
-  run().catch(console.dir);
+  await run().catch(console.dir);
 
   const s3Client = new S3Client({ region: 'us-east-2' });
   const command = new GetObjectCommand({ Bucket: "picture-site-photos", Key: data.path });
