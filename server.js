@@ -1,5 +1,6 @@
 require('dotenv').config();
 
+const cors = require('cors');
 const https = require('https');
 const fs = require('fs');
 const express = require('express');
@@ -9,6 +10,11 @@ const userRoutes = require('./routes/users');
 const app = express();
 
 app.use(express.json());
+
+app.use(cors({
+  origin: '*',
+  methods: ['GET']
+}));
 
 app.use((req, res, next) => {
   console.log(req.path, req.method);
