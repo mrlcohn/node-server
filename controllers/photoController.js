@@ -1,6 +1,8 @@
 require('dotenv').config();
 
+const AWS = require('aws-sdk');
 const { MongoClient, ServerApiVersion } = require('mongodb');
+const { getSignedUrl } = require('@aws-sdk/s3-request-presigner');
 const { S3Client, GetObjectCommand } = require('@aws-sdk/client-s3');
 
 const getAllPhotos = async (req, res) => {
@@ -46,6 +48,7 @@ const getPhoto = async (req, res) => {
       .findOne({ path: path });
     await mongoClient.close();
 
+    AWS.config.update({ region: process.env.AWS_REGION });
     const s3Client = new S3Client({ region: 'us-east-2' });
     const command = new GetObjectCommand({ Bucket: "picture-site-photos", Key: data.path });
     getSignedUrl(s3Client, command, { expiresIn: 30 })
