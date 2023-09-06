@@ -24,7 +24,7 @@ const getAllPhotos = async (req, res) => {
   } catch (error) {
     res.status(404).json({ error: error.message });
   }
-};
+}
 
 const getPhoto = async (req, res) => {
   try {
@@ -54,7 +54,7 @@ const getPhoto = async (req, res) => {
   } catch {
     res.status(404).json({ error: error.message });
   }
-};
+}
 
 module.exports = {
   getAllPhotos,

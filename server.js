@@ -1,9 +1,10 @@
 require('dotenv').config();
 
-const express = require('express');
-const photoRoutes = require('./routes/photos');
 const https = require('https');
 const fs = require('fs');
+const express = require('express');
+const photoRoutes = require('./routes/photos');
+const userRoutes = require('./routes/users');
 
 const app = express();
 
@@ -15,6 +16,7 @@ app.use((req, res, next) => {
 });
 
 app.use('/api/photos/', photoRoutes);
+app.use('/user/', userRoutes);
 
 app.get('/', (req, res) => {
   res.json({msg: 'Welcome to the app'});
