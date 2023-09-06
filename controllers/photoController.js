@@ -1,4 +1,4 @@
-import { MongoClient, ServerApiVersion } from "mongodb";
+const { MongoClient, ServerApiVersion } = require("mongodb");
 
 const getAllPhotos = async (req, res) => {
   try {

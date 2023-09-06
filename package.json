@@ -3,10 +3,10 @@
   "version": "1.0.0",
   "description": "A server for family photo sharing",
   "main": "server.js",
-  "type": "module",
+  "type": "commonjs",
   "scripts": {
     "dev": "nodemon server.js",
-    "start": "sudo node index.js"
+    "start": "sudo node server.js"
   },
   "author": "Leonard Cohn",
   "license": "ISC",
