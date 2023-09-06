@@ -21,7 +21,11 @@ app.get('/', (req, res) => {
 });
 
 https
-  .createServer(app)
+  .createServer({
+    key: '/etc/letsencrypt/live/server.cohn-family.photos/privkey.pem',
+    cert: '/etc/letsencrypt/live/server.cohn-family.photos/fullchain.pem'
+  }
+    app)
   .listen(process.env.PORT, () => {
   console.log('Listening on port ' + process.env.PORT);
 });
