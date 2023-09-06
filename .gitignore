@@ -2,3 +2,4 @@ db-scripts/
 node_modules/
 Dockerfile
 myapp.zip
+.env
