@@ -31,7 +31,7 @@ const getAllPhotos = async (req, res) => {
 
 const getPhoto = async (req, res) => {
   try {
-    const path = req.originalUrl.slice(8);
+    const path = req.originalUrl.slice(12);
 
     const mongoClient = new MongoClient(process.env.CONNECTION_STRING, {
       serverApi: {
