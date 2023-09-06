@@ -23,8 +23,8 @@ app.get('/', (req, res) => {
 https
   .createServer(
     {
-      key: '/etc/letsencrypt/live/server.cohn-family.photos/privkey.pem',
-      cert: '/etc/letsencrypt/live/server.cohn-family.photos/fullchain.pem'
+      key: fs.readFileSync('/etc/letsencrypt/live/server.cohn-family.photos/privkey.pem'),
+      cert: fs.readFileSync('/etc/letsencrypt/live/server.cohn-family.photos/fullchain.pem')
     },
     app
   )
