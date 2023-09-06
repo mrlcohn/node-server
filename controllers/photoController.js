@@ -1,8 +1,10 @@
+require('dotenv').config();
+
 const { MongoClient, ServerApiVersion } = require("mongodb");
 
 const getAllPhotos = async (req, res) => {
   try {
-    const mongoClient = new MongoClient('', {
+    const mongoClient = new MongoClient(process.env.CONNECTION_STRING, {
       serverApi: {
         version: ServerApiVersion.v1,
         strict: true,
@@ -28,7 +30,7 @@ const getPhoto = async (req, res) => {
   try {
     const path = req.originalUrl.slice(8);
 
-    const mongoClient = new MongoClient('', {
+    const mongoClient = new MongoClient(process.env.CONNECTION_STRING, {
       serverApi: {
         version: ServerApiVersion.v1,
         strict: true,
