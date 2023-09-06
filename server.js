@@ -2,6 +2,8 @@ require('dotenv').config();
 
 const express = require('express');
 const photoRoutes = require('./routes/photos');
+const https = require('https');
+const fs = require('fs');
 
 const app = express();
 
@@ -18,6 +20,8 @@ app.get('/', (req, res) => {
   res.json({msg: 'Welcome to the app'});
 });
 
-app.listen(process.env.PORT, () => {
+https
+  .createServer(app)
+  .listen(process.env.PORT, () => {
   console.log('Listening on port ' + process.env.PORT);
 });
