@@ -51,7 +51,7 @@ const getPhoto = async (req, res) => {
     AWS.config.update({ region: process.env.AWS_REGION });
     const s3Client = new S3Client({ region: 'us-east-2' });
     const command = new GetObjectCommand({ Bucket: "picture-site-photos", Key: data.path });
-    const url = getSignedUrl(s3Client, command, { expiresIn: 30 });
+    const url = await getSignedUrl(s3Client, command, { expiresIn: 30 });
     
     res.status(200).json({ url: url });
   } catch (error) {
