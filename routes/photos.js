@@ -9,4 +9,4 @@ const router = express.Router();
 router.get("/", getAllPhotos);
 
 // Get the S3 URL to a specific photo
-app.get("/\*", getPhoto);
+router.get("/\*", getPhoto);
