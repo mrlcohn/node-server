@@ -1,6 +1,7 @@
 require('dotenv').config();
 
-const { MongoClient, ServerApiVersion } = require("mongodb");
+const { MongoClient, ServerApiVersion } = require('mongodb');
+const { S3Client, GetObjectCommand } = require('@aws-sdk/client-s3');
 
 const getAllPhotos = async (req, res) => {
   try {
@@ -51,7 +52,7 @@ const getPhoto = async (req, res) => {
       .then(response => res.send({ 'url': response }));
     
     res.status(200).json(data);
-  } catch {
+  } catch (error) {
     res.status(404).json({ error: error.message });
   }
 }
