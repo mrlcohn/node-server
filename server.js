@@ -5,7 +5,7 @@ const https = require('https');
 const fs = require('fs');
 const express = require('express');
 const photoRoutes = require('./routes/photos');
-const userRoutes = require('./routes/users');
+const userRoutes = require('./routes/user');
 
 const app = express();
 
