@@ -13,7 +13,7 @@ app.use(express.json());
 
 app.use(cors({
   origin: '*',
-  methods: ['GET']
+  methods: ['GET', 'POST']
 }));
 
 app.use((req, res, next) => {
@@ -22,7 +22,7 @@ app.use((req, res, next) => {
 });
 
 app.use('/api/photos/', photoRoutes);
-app.use('/user/', userRoutes);
+app.use('/api/user/', userRoutes);
 
 app.get('/', (req, res) => {
   res.json({msg: 'Welcome to the app'});

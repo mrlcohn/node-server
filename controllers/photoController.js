@@ -29,6 +29,43 @@ const getAllPhotos = async (req, res) => {
   }
 }
 
+const addPhoto = async (req, res) => {
+  try {
+    const { title, path, month, day, year, familyMembers, tags } = req.body;
+
+    if (!title) {
+      title = 'Untitled';
+    }
+    
+    const mongoClient = new MongoClient(process.env.CONNECTION_STRING, {
+      serverApi: {
+        version: ServerApiVersion.v1,
+        strict: true,
+        deprecationErrors: true
+      }
+    });
+
+    await mongoClient.connect();
+    const added = await mongoClient
+      .db('photos')
+      .collection(path)
+      .insertOne({
+        title,
+        path,
+        month,
+        day,
+        year,
+        familyMembers,
+        tags
+      });
+      await mongoClient.close();
+
+      res.status(200).json({ added: true });
+  } catch (error) {
+    res.status(401).json({ error: error.message });
+  }
+}
+
 const getPhoto = async (req, res) => {
   try {
     const path = req.originalUrl.slice(12);
@@ -61,5 +98,6 @@ const getPhoto = async (req, res) => {
 
 module.exports = {
   getAllPhotos,
+  addPhoto,
   getPhoto
 }
